@@ -1,23 +1,23 @@
 package com.eternalc0der.plugins.shellexec;
 
-import com.getcapacitor.JSObject;
-import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
+import com.getcapacitor.annotation.CapacitorPlugin;
+import com.getcapacitor.annotation.PluginMethod;
+import com.getcapacitor.JSObject;
 import com.getcapacitor.PluginCall;
-import com.getcapacitor.PluginMethod;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
-@NativePlugin
-public class ShellExec extends Plugin {
+@CapacitorPlugin(name = "ShellExec")
+public class ShellExecPlugin extends Plugin {
 
     @PluginMethod
     public void execute(PluginCall call) {
         String command = call.getString("command");
+
         if (command == null || command.isEmpty()) {
-            call.reject("Must provide a command to execute.");
+            call.reject("Command is required");
             return;
         }
 
@@ -29,14 +29,15 @@ public class ShellExec extends Plugin {
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
-            reader.close();
-            process.waitFor();
 
-            JSObject ret = new JSObject();
-            ret.put("output", output.toString());
-            call.resolve(ret);
-        } catch (IOException | InterruptedException e) {
-            call.reject("Failed to execute command", e);
+            int exitCode = process.waitFor();
+            JSObject result = new JSObject();
+            result.put("output", output.toString());
+            result.put("exitCode", exitCode);
+
+            call.resolve(result);
+        } catch (Exception e) {
+            call.reject("Execution failed", e);
         }
     }
 }

@@ -9,15 +9,12 @@ export class ShellExecWeb extends WebPlugin implements ShellExecPlugin {
     });
   }
 
-  async execute(options: { command: string }): Promise<{ output: string }> {
-    console.log('Execute command:', options.command);
-    return { output: 'Shell execution is not supported on the web platform.' };
+  async execute(options: { command: string }): Promise<{ output: string; exitCode: number }> {
+    console.log('This function is not available in the web');
+    return { output: '', exitCode: -1 };
   }
 }
 
 const ShellExec = new ShellExecWeb();
 
 export { ShellExec };
-
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(ShellExec);

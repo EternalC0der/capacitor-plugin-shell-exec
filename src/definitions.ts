@@ -5,5 +5,5 @@ declare module '@capacitor/core' {
 }
 
 export interface ShellExecPlugin {
-  execute(options: { command: string }): Promise<{ output: string }>;
+  execute(options: { command: string }): Promise<{ output: string; exitCode: number }>;
 }
