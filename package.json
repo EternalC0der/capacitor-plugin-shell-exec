@@ -1,5 +1,5 @@
 {
-  "name": "@capacitor-community/shell-exec",
+  "name": "capacitor-plugin-shell-exec",
   "version": "1.0.0",
   "description": "Capacitor Plugin to Execute Commands in Android Operating System Shells",
   "main": "dist/plugin.cjs.js",
