@@ -7,8 +7,7 @@
       "dom",
       "es2015"
     ],
-    "module": "es2015",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
