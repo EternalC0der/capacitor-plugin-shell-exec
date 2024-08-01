@@ -1,11 +1,11 @@
-# @capacitor-community/shell-exec
+# capacitor-plugin-shell-exec
 
 Capacitor Plugin to Execute Commands in Android Operating System Shells
 
 ## Install
 
 ```bash
-npm install @capacitor-community/shell-exec
+npm install capacitor-plugin-shell-exec
 npx cap sync
 ```
 
