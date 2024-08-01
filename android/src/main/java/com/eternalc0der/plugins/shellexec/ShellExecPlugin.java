@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 public class ShellExecPlugin extends Plugin {
 
     @PluginMethod
-    public void echo(PluginCall call) {
+    public void execute(PluginCall call) {
         String command = call.getString("command");
 
         if (command == null || command.isEmpty()) {
