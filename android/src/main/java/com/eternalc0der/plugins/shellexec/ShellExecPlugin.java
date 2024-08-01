@@ -1,4 +1,4 @@
-package com.eternalc0der.plugins.shellexec;
+package io.ionic.plugins.shellexec;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -6,10 +6,11 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 @CapacitorPlugin(name = "ShellExec")
 public class ShellExecPlugin extends Plugin {
-
-    private ShellExec implementation = new ShellExec();
 
     @PluginMethod
     public void echo(PluginCall call) {
@@ -21,8 +22,20 @@ public class ShellExecPlugin extends Plugin {
         }
 
         try {
-            JSObject ret = implementation.echo(command);
-            call.resolve(ret);
+            Process process = Runtime.getRuntime().exec(command);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+
+            int exitCode = process.waitFor();
+            JSObject result = new JSObject();
+            result.put("output", output.toString());
+            result.put("exitCode", exitCode);
+
+            call.resolve(result);
         } catch (Exception e) {
             call.reject("Execution failed", e);
         }
