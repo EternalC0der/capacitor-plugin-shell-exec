@@ -1,43 +1,23 @@
-package com.eternalc0der.plugins.Shellexec;
+package com.eternalc0der.plugins.shellexec;
 
-import com.getcapacitor.Plugin;
-import com.getcapacitor.annotation.CapacitorPlugin;
-import com.getcapacitor.annotation.PluginMethod;
-import com.getcapacitor.JSObject;
-import com.getcapacitor.PluginCall;
+import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+public class ShellExec {
 
-@CapacitorPlugin(name = "ShellExec")
-public class ShellExecPlugin extends Plugin {
-
-    @PluginMethod
-    public void execute(PluginCall call) {
-        String command = call.getString("command");
-
-        if (command == null || command.isEmpty()) {
-            call.reject("Command is required");
-            return;
+    public String execute(String command) {
+        Process process = Runtime.getRuntime().exec(command);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        StringBuilder output = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            output.append(line).append("\n");
         }
 
-        try {
-            Process process = Runtime.getRuntime().exec(command);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder output = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line).append("\n");
-            }
+        int exitCode = process.waitFor();
+        JSObject result = new JSObject();
+        result.put("output", output.toString());
+        result.put("exitCode", exitCode);
 
-            int exitCode = process.waitFor();
-            JSObject result = new JSObject();
-            result.put("output", output.toString());
-            result.put("exitCode", exitCode);
-
-            call.resolve(result);
-        } catch (Exception e) {
-            call.reject("Execution failed", e);
-        }
+        return result
     }
 }

@@ -1,14 +1,8 @@
 import { WebPlugin } from '@capacitor/core';
-import { ShellExecPlugin } from './definitions';
+
+import type { ShellExecPlugin } from './definitions';
 
 export class ShellExecWeb extends WebPlugin implements ShellExecPlugin {
-  constructor() {
-    super({
-      name: 'ShellExec',
-      platforms: ['web'],
-    });
-  }
-
   async execute(options: { command: string }): Promise<{ output: string; exitCode: number }> {
     // To suppress the unused parameter warning
     void options;
@@ -17,7 +11,3 @@ export class ShellExecWeb extends WebPlugin implements ShellExecPlugin {
     return { output: '', exitCode: -1 };
   }
 }
-
-const ShellExec = new ShellExecWeb();
-
-export { ShellExec };
