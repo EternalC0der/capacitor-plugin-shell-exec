@@ -2,9 +2,9 @@ import { registerPlugin } from '@capacitor/core';
 
 import type { ShellExecPlugin } from './definitions';
 
-const Example = registerPlugin<ShellExecPlugin>('Example', {
+const ShellExec = registerPlugin<ShellExecPlugin>('ShellExec', {
   web: () => import('./web').then(m => new m.ShellExecWeb()),
 });
 
 export * from './definitions';
-export { Example };
+export { ShellExec };
