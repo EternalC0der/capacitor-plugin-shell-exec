@@ -1,4 +1,4 @@
-package com.eternalc0der.plugins.shellexec;
+package com.eternalc0der.plugins.Shellexec;
 
 import com.getcapacitor.Plugin;
 import com.getcapacitor.annotation.CapacitorPlugin;
