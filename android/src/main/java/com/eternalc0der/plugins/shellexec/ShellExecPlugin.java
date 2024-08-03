@@ -5,11 +5,15 @@ import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
+import com.getcapacitor.JSArray;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @CapacitorPlugin(name = "ShellExec")
 public class ShellExecPlugin extends Plugin {
@@ -18,9 +22,10 @@ public class ShellExecPlugin extends Plugin {
 
     @PluginMethod
     public void execute(final PluginCall call) {
-        final String command = call.getString("command");
+        final String commandStr = call.getString("command");
+        final JSArray commandArray = call.getArray("command");
 
-        if (command == null || command.isEmpty()) {
+        if ((commandStr == null || commandStr.isEmpty()) && (commandArray == null || commandArray.length() == 0)) {
             call.reject("Command is required");
             return;
         }
@@ -29,7 +34,17 @@ public class ShellExecPlugin extends Plugin {
             @Override
             public void run() {
                 try {
-                    Process process = Runtime.getRuntime().exec(command);
+                    Process process;
+                    if (commandArray != null && commandArray.length() > 0) {
+                        String[] commandArr = new String[commandArray.length()];
+                        for (int i = 0; i < commandArray.length(); i++) {
+                            commandArr[i] = commandArray.getString(i);
+                        }
+                        process = Runtime.getRuntime().exec(commandArr);
+                    } else {
+                        process = Runtime.getRuntime().exec(commandStr);
+                    }
+
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                     StringBuilder output = new StringBuilder();
                     String line;
@@ -43,8 +58,15 @@ public class ShellExecPlugin extends Plugin {
                     result.put("exitCode", exitCode);
 
                     call.resolve(result);
+                } catch (IOException e) {
+                    call.reject("IOException occurred: " + e.getMessage());
+                    Logger.getLogger(ShellExecPlugin.class.getName()).log(Level.SEVERE, null, e);
+                } catch (InterruptedException e) {
+                    call.reject("Command execution interrupted: " + e.getMessage());
+                    Logger.getLogger(ShellExecPlugin.class.getName()).log(Level.SEVERE, null, e);
                 } catch (Exception e) {
-                    call.reject("Execution failed", e);
+                    call.reject("Unexpected error occurred: " + e.getMessage());
+                    Logger.getLogger(ShellExecPlugin.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
         });
