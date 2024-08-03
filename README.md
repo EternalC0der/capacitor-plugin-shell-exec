@@ -26,8 +26,8 @@ npx cap sync
 execute(options: { command: string | string[]; }) => Promise<{ output: string; exitCode: number; }>
 ```
 
-| Param         | Type                              |
-| ------------- | --------------------------------- |
+| Param         | Type                                          |
+| ------------- | --------------------------------------------- |
 | **`options`** | <code>{ command: string \| string[]; }</code> |
 
 **Returns:** <code>Promise&lt;{ output: string; exitCode: number; }&gt;</code>
