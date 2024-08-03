@@ -1,6 +1,6 @@
 {
   "name": "capacitor-plugin-shell-exec",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Capacitor Plugin to Execute Commands in Android Operating System Shells",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",

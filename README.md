@@ -23,12 +23,12 @@ npx cap sync
 ### execute(...)
 
 ```typescript
-execute(options: { command: string; }) => Promise<{ output: string; exitCode: number; }>
+execute(options: { command: string | string[]; }) => Promise<{ output: string; exitCode: number; }>
 ```
 
 | Param         | Type                              |
 | ------------- | --------------------------------- |
-| **`options`** | <code>{ command: string; }</code> |
+| **`options`** | <code>{ command: string \| string[]; }</code> |
 
 **Returns:** <code>Promise&lt;{ output: string; exitCode: number; }&gt;</code>
 

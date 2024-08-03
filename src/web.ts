@@ -3,7 +3,7 @@ import { WebPlugin } from '@capacitor/core';
 import type { ShellExecPlugin } from './definitions';
 
 export class ShellExecWeb extends WebPlugin implements ShellExecPlugin {
-  async execute(options: { command: string }): Promise<{ output: string; exitCode: number }> {
+  async execute(options: { command: string | string[] }): Promise<{ output: string; exitCode: number }> {
     // To suppress the unused parameter warning
     void options;
 
